@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Commerce.Web.Migrations
+namespace Commerce.Migrations
 {
     public partial class AddCategories : Migration
     {

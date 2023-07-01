@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Commerce.Web.Models
+namespace Commerce.Models
 {
     public class CoverType
     {

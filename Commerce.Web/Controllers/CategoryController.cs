@@ -1,5 +1,5 @@
-﻿using Commerce.Web.Data;
-using Commerce.Web.Models;
+﻿using Commerce.DataAcces;
+using Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Commerce.Web.Controllers

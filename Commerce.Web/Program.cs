@@ -1,4 +1,4 @@
-using Commerce.Web.Data;
+using Commerce.DataAcces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

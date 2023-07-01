@@ -1,4 +1,4 @@
-﻿using Commerce.Web.Models;
+﻿using Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Commerce.Web.Migrations
+namespace Commerce.Migrations
 {
     public partial class AddCoverTypeTable : Migration
     {

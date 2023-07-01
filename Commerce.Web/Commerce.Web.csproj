@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Commerce.DataAccess\Commerce.DataAccess.csproj" />
+    <ProjectReference Include="..\Commerce.Models\Commerce.Models.csproj" />
+  </ItemGroup>
+
 </Project>

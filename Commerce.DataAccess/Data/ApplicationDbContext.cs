@@ -1,7 +1,8 @@
-﻿using Commerce.Web.Models;
+﻿
+using Commerce.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Web.Data
+namespace Commerce.DataAcces
 {
     public class ApplicationDbContext:DbContext
     {
