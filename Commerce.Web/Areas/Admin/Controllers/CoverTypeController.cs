@@ -1,15 +1,17 @@
 ﻿using Commerce.DataAcces;
+using Commerce.DataAccess.Repository.IRepository;
 using Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Commerce.Web.Controllers
+namespace Commerce.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CoverTypeController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CoverTypeController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CoverTypeController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         /// <summary>
         /// Index
@@ -18,7 +20,7 @@ namespace Commerce.Web.Controllers
         public IActionResult Index()
         {
             ViewBag.ProductDescription = "";
-            IEnumerable<CoverType> objCoverTypeList = _db.CoverTypes;
+            IEnumerable<CoverType> objCoverTypeList = _unitOfWork.CoverType.GetAll();
             return View(objCoverTypeList);
         }
         public IActionResult Create()
@@ -31,8 +33,8 @@ namespace Commerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.CoverTypes.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.CoverType.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "CoverType Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -45,7 +47,7 @@ namespace Commerce.Web.Controllers
             {
                 return NotFound();
             }
-            var objToEdit = _db.CoverTypes.Find(id);
+            var objToEdit = _unitOfWork.CoverType.GetFirstOrDefault(x => x.Id == id);
             if (objToEdit == null)
             {
                 return NotFound();
@@ -59,8 +61,8 @@ namespace Commerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.CoverTypes.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.CoverType.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "CoverType Updated Successfully";
                 return RedirectToAction("Index");
 
@@ -73,7 +75,7 @@ namespace Commerce.Web.Controllers
             {
                 return NotFound();
             }
-            var objToEdit = _db.CoverTypes.Find(id);
+            var objToEdit = _unitOfWork.CoverType.GetFirstOrDefault(x => x.Id == id);
             if (objToEdit == null)
             {
                 return NotFound();
@@ -86,13 +88,13 @@ namespace Commerce.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteObj(int? id)
         {
-            var obj = _db.CoverTypes.Find(id);
+            var obj = _unitOfWork.CoverType.GetFirstOrDefault(x => x.Id == id);
             if (obj == null)
             {
                 NotFound();
             }
-            _db.CoverTypes.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.CoverType.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "CoverType Deleted Successfully";
             return RedirectToAction("Index");
         }

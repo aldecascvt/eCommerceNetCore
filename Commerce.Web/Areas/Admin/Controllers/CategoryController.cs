@@ -1,15 +1,16 @@
-﻿using Commerce.DataAcces;
+﻿using Commerce.DataAccess.Repository.IRepository;
 using Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Commerce.Web.Controllers
+namespace Commerce.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         /// <summary>
         /// Index
@@ -18,7 +19,7 @@ namespace Commerce.Web.Controllers
         public IActionResult Index()
         {
             ViewBag.ProductDescription = "Libros nuevos";
-            IEnumerable<Category> objCategoryList = _db.Categories;
+            IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -31,8 +32,8 @@ namespace Commerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -45,7 +46,7 @@ namespace Commerce.Web.Controllers
             {
                 return NotFound();
             }
-            var objToEdit = _db.Categories.Find(id);
+            var objToEdit = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (objToEdit == null)
             {
                 return NotFound();
@@ -59,8 +60,8 @@ namespace Commerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
@@ -72,7 +73,7 @@ namespace Commerce.Web.Controllers
             {
                 return NotFound();
             }
-            var objToEdit = _db.Categories.Find(id);
+            var objToEdit = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (objToEdit == null)
             {
                 return NotFound();
@@ -85,13 +86,13 @@ namespace Commerce.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteObj(int? id)
         {
-            var obj = _db.Categories.Find(id);
+            var obj = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (obj == null)
             {
                 NotFound();
             }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category Deleted Successfully";
             return RedirectToAction("Index");
         }
