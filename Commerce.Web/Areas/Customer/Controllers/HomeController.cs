@@ -9,9 +9,9 @@ namespace Commerce.Web.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger,IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -19,21 +19,19 @@ namespace Commerce.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var productList = _unitOfWork.Product.GetAll(includeProperties:"Category,CoverType");
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
             return View(productList);
         }
-        public IActionResult Details(int productId)
+        public IActionResult Details(int id)
         {
             ShoppingCart cartObj = new()
             {
-                ProductId = productId,
-                Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == productId, includeProperties: "Category,CoverType"),
+                Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, includeProperties: "Category,CoverType"),
                 Count = 1
             };
 
             return View(cartObj);
         }
-
 
         public IActionResult Privacy()
         {
